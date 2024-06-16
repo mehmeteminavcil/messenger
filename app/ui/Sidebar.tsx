@@ -3,6 +3,8 @@ import React from "react";
 import { IoIosSearch, IoMdNotificationsOutline } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
+import Search from "./Search";
+import { messages } from "../lib/placeholder-data";
 
 const Sidebar = () => {
   return (
@@ -30,14 +32,7 @@ const Sidebar = () => {
             />
           </div>
         </div>
-        <span className="bg-gray-1 w-full flex items-center gap-2 mt-3 rounded-2xl px-2 py-2">
-          <IoIosSearch size={18} color="gray" />
-          <input
-            type="text"
-            placeholder="Search chats"
-            className="bg-transparent text-gray-4 outline-none text-sm"
-          />
-        </span>
+        <Search />
       </div>
       {/* buttons */}
       <div className="p-3 ">
@@ -66,7 +61,7 @@ const Sidebar = () => {
         {/* messagesss */}
       </div>
       <div className=" p-2 h-[72%] overflow-scroll mr-1  ">
-        {messages?.map((message) => (
+        {messages.map((message) => (
           <div
             key={message.id}
             className="hover:bg-gray-2 flex  p-2 gap-2 cursor-pointer rounded-lg "
@@ -108,117 +103,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-const messages = [
-  {
-    id: 1,
-    name: "Ares Morgan",
-    lastMessage: "Hello",
-    lastMessageTime: "Just now",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  {
-    id: 2,
-    name: "Alexandra Chang",
-    lastMessage: "See you Saturday!",
-    lastMessageTime: "2:36 pm",
-    img: "/profile1.jpg",
-    isActive: false,
-  },
-  {
-    id: 3,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  ,
-  {
-    id: 4,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  ,
-  {
-    id: 5,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  ,
-  {
-    id: 6,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  {
-    id: 7,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  {
-    id: 8,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  ,
-  {
-    id: 9,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  ,
-  {
-    id: 10,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  {
-    id: 10,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-  {
-    id: 10,
-    name: "Ares Morgan",
-    lastMessage:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
-    lastMessageTime: "Yesterday",
-    img: "/profile1.jpg",
-    isActive: true,
-  },
-];
