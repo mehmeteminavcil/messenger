@@ -1,14 +1,14 @@
 import { Metadata } from "next";
-import Login from "../ui/Login";
+import Signup from "../ui/Signup";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Sign up",
 };
 
 const page = () => {
   return (
     <section className="w-full p-3 items-center justify-center rounded-3xl bg-white border border-gray max-w-[1240px] flex h-full overflow-hidden">
-      <Login />
+      <Signup />
     </section>
   );
 };
