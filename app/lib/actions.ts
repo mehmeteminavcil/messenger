@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 const FormSchema = z.object({
@@ -88,4 +88,10 @@ export async function authenticate(formData: FormData) {
     }
     throw error;
   }
+}
+
+// LOGOUT
+
+export async function signOutAction() {
+  await signOut();
 }

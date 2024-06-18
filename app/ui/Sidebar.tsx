@@ -1,17 +1,26 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
-import { IoIosSearch, IoMdNotificationsOutline } from "react-icons/io";
+import React, { useState } from "react";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
 import Search from "./Search";
 import { messages } from "../lib/placeholder-data";
+import ProfileSettings from "./ProfileSettings";
+import { signOutAction } from "../lib/actions";
 
 const Sidebar = () => {
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
   return (
     <section className=" h-full min-w-[320px] relative">
-      <div className="p-3 border-b-2">
+      <div
+        className="p-3 border-b-2"
+        onMouseLeave={() => setSettingsOpen(false)}
+      >
         {/* profile */}
-        <div className="flex justify-between items-center ">
+        <div className="flex justify-between items-center relative ">
           <Image
             src="/profile1.jpg"
             height={50}
@@ -27,9 +36,14 @@ const Sidebar = () => {
             />
             <BsThreeDotsVertical
               color="gray "
-              className="p-[6px] bg-gray-1 rounded-full"
+              className="p-[6px] bg-gray-1 rounded-full cursor-pointer"
               size={30}
+              onClick={() => setSettingsOpen((prev) => !prev)}
             />
+
+            {settingsOpen && (
+              <ProfileSettings handleSignOut={() => signOutAction()} />
+            )}
           </div>
         </div>
         <Search />
@@ -92,12 +106,17 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-      <div className="absolute w-full p-4 bottom-0 left-0 ">
-        <div className="bg-dark text-gray-300 flex items-center gap-3 rounded-2xl text-sm  font-light px-2 py-3 cursor-pointer">
+      <div className="absolute w-full p-4 bottom-0 left-0 flex  items-center justify-between gap-3">
+        <div className="bg-dark text-gray-300 w-full flex items-center gap-3 rounded-xl text-sm  font-light px-2 py-3 cursor-pointer">
           <PiNotePencil size={16} className="ml-2" />
           Start a new chat
         </div>
+        {/* <IoSettingsOutline
+          size={44}
+          className=" bg-gray-3/80 px-3  text-white  rounded-xl cursor-pointer"
+        /> */}
       </div>
+      <div></div>
     </section>
   );
 };
