@@ -7,10 +7,15 @@ import Link from "next/link";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { authenticate } from "../lib/actions";
+import InputError from "./InputError";
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email format email@domain.com " }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -19,24 +24,30 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
 
-      console.log(data);
-    } catch (error) {}
+    await authenticate(formData).then((result) => {
+      if (result?.error) {
+        console.log(result.error);
+        setError("email", { message: result.error });
+      }
+    });
   };
 
   return (
     <div className="flex items-center justify-center w-full h-full flex-col  max-w-80">
       <h1 className="font-semibold text-lg">Login to your account</h1>
       <p className="text-sm text-gray-4 mb-2">
-        Enter your email to enjoy free messaging
+        Enter your email to get acces the app
       </p>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -50,6 +61,7 @@ const Login = () => {
             errors.email && "outline-red-400"
           }`}
         />
+        {errors.email && <InputError error={errors.email.message} />}
 
         <input
           {...register("password")}
@@ -59,6 +71,7 @@ const Login = () => {
             errors.password && "outline-red-400"
           }`}
         />
+        {errors.password && <InputError error={errors.password.message} />}
         <button
           disabled={isSubmitting}
           type="submit"
