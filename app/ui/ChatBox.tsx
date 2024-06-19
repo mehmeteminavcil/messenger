@@ -1,13 +1,31 @@
 import React from "react";
+import { formatChatDate } from "../lib/utils";
 
-const ChatBox = () => {
+const ChatBox = ({
+  sender,
+  text,
+  date,
+}: {
+  sender: boolean;
+  text: string;
+  date: string;
+}) => {
   return (
-    <div className="p-3 bg-blue rounded-xl max-w-[50%]">
-      <p className="text-white text-sm">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem quasi
-        cupiditate accusamus explicabo atque velit.
+    <div
+      className={`p-3  rounded-xl max-w-[50%] mt-4 ${
+        sender ? "bg-blue ml-auto" : "bg-white"
+      }`}
+    >
+      <p className={` text-sm ${sender ? "text-white" : "text-dark"}`}>
+        {text}
       </p>
-      <p className="text-gray-2 text-xs text-right">2:36pm</p>
+      <p
+        className={` text-xs text-right ${
+          sender ? "text-gray-2" : "text-dark"
+        }`}
+      >
+        {formatChatDate(date)}
+      </p>
     </div>
   );
 };

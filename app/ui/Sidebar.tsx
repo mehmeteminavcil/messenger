@@ -1,17 +1,49 @@
 "use client";
-
 import Image from "next/image";
-import React, { useState } from "react";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import React, { useEffect, useState } from "react";
+import { IoIosSearch, IoMdNotificationsOutline } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { PiNotePencil } from "react-icons/pi";
-import Search from "./Search";
-import { messages } from "../lib/placeholder-data";
 import ProfileSettings from "./ProfileSettings";
 import { signOutAction } from "../lib/actions";
+import Link from "next/link";
+import { useDebouncedCallback } from "use-debounce";
+import ChatListClient from "./ChatListClient";
+import { Message, messages } from "../lib/placeholder-data";
+import { fetchAllChats, fetchFilteredChats } from "../lib/data";
 
 const Sidebar = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>();
+  const [chats, setChats] = useState<Message[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetchAllChats();
+      setChats(res);
+    };
+
+    const filteredChats = async (query: string) => {
+      try {
+        const res = await fetchFilteredChats(query);
+        setChats(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (!searchTerm) {
+      fetchData();
+    }
+    if (searchTerm) {
+      filteredChats(searchTerm);
+    }
+  }, [searchTerm]);
+
+  const handleSearch = useDebouncedCallback((searchText: string) => {
+    console.log(`Searching...${searchText}`);
+    setSearchTerm(searchText);
+  }, 300);
 
   return (
     <section className=" h-full min-w-[320px] relative">
@@ -46,27 +78,37 @@ const Sidebar = () => {
             )}
           </div>
         </div>
-        <Search />
+        {/* SEARCH */}
+        <div className="bg-gray-1 w-full flex items-center gap-2 mt-3 rounded-2xl px-2 py-2">
+          <IoIosSearch size={18} color="gray" />
+          <input
+            type="text"
+            placeholder="Search chats"
+            className="bg-transparent text-gray-4 outline-none text-sm"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
       </div>
+
       {/* buttons */}
       <div className="p-3 ">
         <div className="flex ">
           <div className="bg-gray-1 rounded-3xl p-1 flex-center gap-2">
-            <button className="  bg-white px-2 py-1 rounded-3xl gap-2 flex-center">
+            <button className="   px-2 py-1 rounded-3xl gap-2 flex-center bg-white ">
               <span className="text-sm text-dark">All</span>
               <span className="text-[10px] bg-gray-4 w-4 h-4 rounded-full flex-center text-white">
-                9
+                {chats?.length}
               </span>
             </button>
             <button className="  bg-white px-2 py-1 rounded-3xl gap-2 flex-center ">
               <span className="text-sm text-dark">Friends</span>
-              <span className="text-[10px] bg-gray-4 w-4 h-4 rounded-full flex-center text-white">
+              <span className="text-[10px] bg-gray-3 w-4 h-4 rounded-full flex-center text-white">
                 7
               </span>
             </button>
             <button className="  bg-white px-2 py-1 rounded-3xl gap-2 flex-center">
               <span className="text-sm text-dark">Groups</span>
-              <span className="text-[10px] bg-gray-4 w-4 h-4 rounded-full flex-center text-white">
+              <span className="text-[10px] bg-gray-3 w-4 h-4 rounded-full flex-center text-white">
                 2
               </span>
             </button>
@@ -74,43 +116,15 @@ const Sidebar = () => {
         </div>
         {/* messagesss */}
       </div>
-      <div className=" p-2 h-[72%] overflow-scroll mr-1  ">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className="hover:bg-gray-2 flex  p-2 gap-2 cursor-pointer rounded-lg "
-          >
-            <div className="flex relative">
-              <Image
-                src={message.img}
-                alt={message.name}
-                width={46}
-                height={46}
-                className="rounded-full"
-              />
-              {message.isActive && (
-                <span className="w-[10px] h-[10px] absolute bottom-[2px] right-[1px] rounded-full bg-green border border-white" />
-              )}
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-gray-4 text-sm font-semibold">
-                {message.name}
-              </span>
-              <span className="text-xs text-gray-3 max-w-[160px] overflow-hidden whitespace-nowrap text-ellipsis">
-                {message.lastMessage}{" "}
-              </span>
-            </div>
-            <span className="text-xs text-gray-3 ml-auto">
-              {message.lastMessageTime}
-            </span>
-          </div>
-        ))}
-      </div>
+      <ChatListClient chats={chats} />
       <div className="absolute w-full p-4 bottom-0 left-0 flex  items-center justify-between gap-3">
-        <div className="bg-dark text-gray-300 w-full flex items-center gap-3 rounded-xl text-sm  font-light px-2 py-3 cursor-pointer">
+        <Link
+          href="/messenger/new-chat"
+          className="bg-dark text-gray-300 w-full flex items-center gap-3 rounded-xl text-sm  font-light px-2 py-3 cursor-pointer"
+        >
           <PiNotePencil size={16} className="ml-2" />
           Start a new chat
-        </div>
+        </Link>
         {/* <IoSettingsOutline
           size={44}
           className=" bg-gray-3/80 px-3  text-white  rounded-xl cursor-pointer"

@@ -8,7 +8,7 @@ export type Message = {
 };
 export const messages = [
   {
-    id: 1,
+    id: "1",
     name: "Ares Morgan",
     lastMessage: "Hello",
     lastMessageTime: "Just now",
@@ -16,7 +16,7 @@ export const messages = [
     isActive: true,
   },
   {
-    id: 2,
+    id: "2",
     name: "Alexandra Chang",
     lastMessage: "See you Saturday!",
     lastMessageTime: "2:36 pm",
@@ -24,7 +24,7 @@ export const messages = [
     isActive: false,
   },
   {
-    id: 3,
+    id: "3",
     name: "Ares Morgan",
     lastMessage:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, quasi.",
